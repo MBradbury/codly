@@ -509,9 +509,10 @@
     "codly-number",
     prefix: __codly-prefix,
     doc: "A line number of a codly code block.",
-    display: it => it.body,
+    display: it => (it.format)(it.body),
     fields: (
       e.field("body", e.types.union(int, content), doc: "The line number content.", required: true),
+      e.field("format", e.types.option(function), doc: __doc("number-format"), default: __default("number-format")),
       e.field("align", e.types.option(alignment), doc: __doc("number-align"), default: __default("number-align")),
       e.field("placement", e.types.option(e.types.union("inside", "outside")), doc: __doc("number-placement"), default: __default("number-placement")),
     )
