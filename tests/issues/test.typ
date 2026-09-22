@@ -12,7 +12,7 @@
 #include "39-offset-by-name.typ"
 #pagebreak()
 
-#include "40-header-no-number.typ"  
+#include "40-header-no-number.typ"
 #pagebreak()
 
 // Issue 47 is checked as an expected compiler error by tests/run.py.
@@ -39,3 +39,21 @@
 #pagebreak()
 
 #include "89-nested-highlights.typ"
+#pagebreak()
+
+#include "131-typstv15-baseline.typ"
+#pagebreak()
+
+#include "133-nested-highlights.typ"
+#pagebreak()
+
+#include "67-show-rule-regex.typ"
+#pagebreak()
+
+#include "96-multiline-highlights.typ"
+#pagebreak()
+
+#include "91-end-of-file-newline.typ"
+#pagebreak()
+
+#include "108-dark-theme.typ"

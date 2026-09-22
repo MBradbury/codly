@@ -7,10 +7,6 @@
 Hello, world!
 ```]
 
-#codly.new(enabled: false)[```typst
-Hello, world!
-```]
-
 #codly.new[```typst
 Hello, world!
 ```]
@@ -22,43 +18,25 @@ Hello, world!
 #{
   show: e.show_(codly.codly-lang, it => [])
   codly.new(number-enabled: false)[```typst
-Hello, world!
+  Hello, world!
   ```]
 }
 
 #{
   show: e.show_(codly.codly-lang, it => [])
-  codly.new(number-enabled: false, annotations: ((start: 1, content: "Hello, world!"), ))[```typst
+  codly.new(number-enabled: false, annotations: ((start: 1, content: "Hello, world!"),))[```typst
   Hello, world!
   ```]
 }
 
-#codly.new(number-enabled: false, annotations: ((start: 1, content: "Hello, world!"), ))[```typst
+#codly.new(number-enabled: false, annotations: ((start: 1, content: "Hello, world!"),))[```typst
 Hello, world!
 ```]
 
 = With highlight
 #{
   show: codly.line-set_(inset: 0.5pt)
-  codly.new(number-enabled: false, highlights: ((line: 1, tag: "Hello, world!"), ))[```typst
-  Hello, world!
-  ```]
-}
-
-#codly.new(enabled: false)[```typst
-Hello, world!
-```]
-
-#{
-  show: codly.line-set_(inset: 10pt)
-  codly.new(number-enabled: false)[```typst
-  Hello, world!
-  ```]
-}
-
-#{
-  show: codly.line-set_(inset: 0.5pt)
-  codly.new(number-enabled: false)[```typst
+  codly.new(number-enabled: false, highlights: ((line: 1, tag: "Hello, world!"),))[```typst
   Hello, world!
   ```]
 }
@@ -68,6 +46,6 @@ Hello, world!
     py: (name: "Python", icon: "Sss ", color: rgb("#4584b6")),
   ))
   codly.new[```py
-# Example code that calculates the sum of the first 10 natural numbers squares
+  # Example code that calculates the sum of the first 10 natural numbers squares
   ```]
 }

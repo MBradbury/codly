@@ -2,7 +2,6 @@
 
 #set page(width: 240pt, height: auto, margin: 5pt)
 #codly.new(
-  enabled: true,
   annotations: (
     (start: 1),
     (start: 3),
@@ -11,13 +10,14 @@
     (start: 9),
   ),
   ```
-a
-b
-c
-d
-e
-f
-g
-h
-i
-```)
+  a
+  b
+  c
+  d
+  e
+  f
+  g
+  h
+  i
+  ```,
+)

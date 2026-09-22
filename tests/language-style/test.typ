@@ -37,7 +37,13 @@
 
 #let capture-lang = it => {
   let fields = e.fields(it)
-  [#metadata((body: fields.body, display-name: fields.display-name, display-icon: fields.display-icon, radius: fields.radius, definition-radius: fields.languages.py.at("radius", default: none)))<language-fields>#it]
+  [#metadata((
+      body: fields.body,
+      display-name: fields.display-name,
+      display-icon: fields.display-icon,
+      radius: fields.radius,
+      definition-radius: fields.languages.py.at("radius", default: none),
+    ))<language-fields>#it]
 }
 
 // Both parts of the badge are shown by default.
@@ -64,6 +70,15 @@
   codly.new(raw("hidden", lang: "py", block: true))
 }
 
+// #129: image icons must survive when the language name is hidden.
+#{
+  show image: it => context [#metadata(measure(it))<badge-image>#it]
+  show: codly.lang-set_(display-name: false, languages: (
+    typ: (name: "Typst", icon: box(image("../../src/typst-small.png", height: 0.8em)), color: teal),
+  ))
+  codly.new(raw("image icon", lang: "typ", block: true))
+}
+
 #context {
   let fields = query(<language-fields>).map(it => it.value)
   assert.eq(fields.len(), 4)
@@ -74,7 +89,10 @@
     (false, false),
   ))
   assert.eq(fields.map(it => it.radius), (
-    radius, 6pt, 6pt, 6pt,
+    radius,
+    6pt,
+    6pt,
+    6pt,
   ))
   assert.eq(fields.map(it => it.definition-radius), (
     radius,
@@ -84,6 +102,9 @@
   ))
 
   let rendered = e.query(codly.codly-lang).map(text-of)
-  assert.eq(rendered, ("PPython", "P", "Python", ""))
+  assert.eq(rendered, ("PPython", "P", "Python", "", ""))
   assert.eq(query(<badge-radius>).map(it => it.value), (radius, radius, radius))
+  let images = query(<badge-image>)
+  assert.eq(images.len(), 1)
+  assert(images.first().value.width > 0pt and images.first().value.height > 0pt)
 }

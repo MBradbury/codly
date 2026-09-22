@@ -14,7 +14,8 @@
 // Unsorted, overlapping ranges merge; one placeholder per omitted run.
 #check(("skip", 3, 4, 5, "skip", 8, "skip"), codly.new(
   raw("1\n2\n3\n4\n5\n6\n7\n8\n9\n10", block: true),
-  ranges: ((8, 8), (3, 4), (4, 5)), smart-skip: true,
+  ranges: ((8, 8), (3, 4), (4, 5)),
+  smart-skip: true,
 ))
 
 // Skip records are sorted once, and exact duplicates do not block later skips.
@@ -25,7 +26,9 @@
 
 // Open ranges and an omitted trailing empty line.
 #check(("skip", 2, 3), codly.new(
-  raw("1\n2\n3\n", block: true), range: (2,), smart-skip: true,
+  raw("1\n2\n3\n", block: true),
+  range: (2,),
+  smart-skip: true,
 ))
 
 // Exercise each smart-skip switch independently and keep ordinary gaps hidden.
@@ -35,8 +38,10 @@
   ((last: true), (2, 3, 6, "skip")),
   (false, (2, 3, 6)),
 ) {
-  check(expected, codly.new(raw("1\n2\n3\n4\n5\n6\n7\n8", block: true),
-    ranges: ((2, 3), (6, 6)), smart-skip: flags,
+  check(expected, codly.new(
+    raw("1\n2\n3\n4\n5\n6\n7\n8", block: true),
+    ranges: ((2, 3), (6, 6)),
+    smart-skip: flags,
   ))
 }
 
@@ -58,15 +63,19 @@
     assert.eq((it.fill)(1, 1), blue)
     it
   }
-  codly.new(raw("one\ntwo", block: true), offset: 1000000,
-    highlighted: ((1000002, blue), (1000001, red)),
-  )
+  codly.new(raw("one\ntwo", block: true), offset: 1000000, highlighted: (
+    (1000002, blue),
+    (1000001, red),
+  ))
 }
 
 // Default whole-line fill follows the highlight element's settings.
 #{
   show: codly.highlight-set_(color: green, fill: color => color)
-  show grid: it => { assert.eq((it.fill)(1, 0), green); it }
+  show grid: it => {
+    assert.eq((it.fill)(1, 0), green)
+    it
+  }
   codly.new(raw("one", block: true), highlighted: (1,))
 }
 
@@ -82,17 +91,20 @@
 
 // Outside borders use displayed rows, including headers and footers.
 #{
-  show: e.set_(codly.codly-number, placement: "outside")
+  show: e.set_(codly.codly-number, placement: "outside", fill: none)
   show: codly.line-set_(stroke: red + 1pt)
-  show grid: it => {
-    assert.eq((it.stroke)(1, 3).bottom, red + 1pt)
-    assert.eq((it.stroke)(1, 4).bottom, none)
-    it
-  }
+  show block: it => if type(it.stroke) == stroke and it.stroke.thickness == 1pt {
+    [#metadata(it.height)<outside-outline>#it]
+  } else { it }
   codly.new(raw("1\n2\n3\n4\n5", block: true), range: (2, 3), header: [head], footer: [foot])
 }
 
 #context {
+  let outline = query(<outside-outline>).first()
+  let marks = query(<__codly-geometry>)
+  let top = marks.filter(it => it.value.kind == "cell-start").first().location().position().y
+  let bottom = marks.filter(it => it.value.kind == "cell-end").last().location().position().y
+  assert.eq(outline.value, bottom - top)
   for expected in query(<expected-lines>) {
     let actual = ()
     let end = query(selector(<__codly-block>).after(expected.location())).first()

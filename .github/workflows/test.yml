@@ -8,6 +8,23 @@ on:
     branches: [ main ]
 
 jobs:
+  formatting:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Typstyle
+        uses: baptiste0928/cargo-install@v3.0.0
+        with:
+          crate: typstyle
+          version: '0.15.1'
+
+      - name: Check Typst formatting
+        run: >-
+          typstyle --check --line-width 100 --indent-width 2
+          --no-reorder-import-items codly.typ src tests
+
   tests:
     runs-on: ubuntu-latest
     steps:
@@ -17,7 +34,7 @@ jobs:
       - name: Probe runner package cache
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
-          packages: cargo
+          packages: cargo poppler-utils
           version: 1.0
 
       - name: Install Tytanic
